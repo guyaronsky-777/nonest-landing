@@ -1,1 +1,71 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Web Dominance Score</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; padding: 20px; }
+    .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 60px 30px; text-align: center; }
+    .header h1 { font-size: 36px; margin-bottom: 16px; }
+    .form-section { padding: 40px 30px; }
+    .form-title { font-size: 20px; font-weight: 600; margin-bottom: 24px; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-weight: 600; margin-bottom: 8px; }
+    input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 16px; }
+    input:focus { outline: none; border-color: #667eea; }
+    .submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
+    .results { padding: 40px 30px; display: none; border-top: 2px solid #e2e8f0; }
+    .results.show { display: block; }
+    .score-box { background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); border: 2px solid #667eea; border-radius: 12px; padding: 30px; text-align: center; margin-bottom: 24px; }
+    .score-number { font-size: 56px; font-weight: 700; color: #667eea; }
+    .revenue-number { font-size: 40px; font-weight: 700; color: #c53030; }
+    .cta-button { width: 100%; padding: 16px; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Is Your Restaurant Invisible?</h1>
+      <p>We fix that in 30 days.</p>
+    </div>
+    <div class="form-section">
+      <h2 class="form-title">Get Your Free Web Dominance Score</h2>
+      <form id="scoreForm">
+        <div class="form-group">
+          <label>Restaurant Name</label>
+          <input type="text" placeholder="Deli Santa Maria" required>
+        </div>
+        <div class="form-group">
+          <label>Website</label>
+          <input type="text" placeholder="deli-caffe.com" required>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="your@email.com" required>
+        </div>
+        <button type="submit" class="submit-btn">Get Your Score</button>
+      </form>
+    </div>
+    <div class="results" id="results">
+      <h3>Your Web Dominance Score</h3>
+      <div class="score-box">
+        <div class="score-number">77</div>
+        <div class="score-label">GOOD</div>
+      </div>
+      <div class="revenue-loss">
+        <p>Monthly Revenue at Risk:</p>
+        <div class="revenue-number">€10,350</div>
+      </div>
+      <button class="cta-button" onclick="window.open('https://calendly.com/nonest/30min')">Schedule Call</button>
+    </div>
+  </div>
+  <script>
+    document.getElementById('scoreForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      document.getElementById('results').classList.add('show');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
