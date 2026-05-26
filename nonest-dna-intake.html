@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NON EST — DNA Intake</title>
+  <style>
+    :root {
+      --dark: #0F3D3E;
+      --gold: #C97B3C;
+      --cream: #F5F1E8;
+      --text: #1a1a1a;
+      --muted: #5C6F70;
+      --border: #d4c9b0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0;
+    }
+    .header {
+      background: var(--dark);
+      color: white;
+      padding: 32px 24px 24px;
+      text-align: center;
+    }
+    .header .logo {
+      font-size: 13px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .header h1 {
+      font-size: 28px;
+      font-weight: normal;
+      margin-bottom: 8px;
+    }
+    .header p {
+      font-size: 14px;
+      color: #a8babb;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .form-container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+    .section {
+      margin-bottom: 48px;
+    }
+    .section-title {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 24px;
+    }
+    .field {
+      margin-bottom: 24px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+    label .req { color: var(--gold); }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      background: white;
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--text);
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--dark);
+    }
+    textarea { resize: vertical; min-height: 100px; }
+    .multi-select {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .multi-select label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      background: white;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text);
+      border-radius: 2px;
+      transition: all 0.15s;
+      margin-bottom: 0;
+    }
+    .multi-select input[type="checkbox"] { display: none; }
+    .multi-select label:has(input:checked) {
+      background: var(--dark);
+      color: white;
+      border-color: var(--dark);
+    }
+    .guest-block {
+      border: 1px solid var(--border);
+      padding: 20px;
+      margin-bottom: 16px;
+      background: white;
+    }
+    .guest-block h4 {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .submit-btn {
+      width: 100%;
+      padding: 18px;
+      background: var(--gold);
+      color: white;
+      border: none;
+      font-family: inherit;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .submit-btn:hover { background: #b56a2e; }
+    .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 64px 24px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .success-screen.visible { display: block; }
+    .success-screen h2 {
+      font-size: 32px;
+      color: var(--dark);
+      margin-bottom: 16px;
+    }
+    .success-screen p {
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+    .whatsapp-cta {
+      display: inline-block;
+      padding: 16px 32px;
+      background: #25D366;
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 1px;
+      border-radius: 2px;
+    }
+    .error-msg {
+      color: #c0392b;
+      font-size: 13px;
+      margin-top: 6px;
+      display: none;
+    }
+    .submitting-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,61,62,0.85);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+    .submitting-overlay.visible { display: flex; }
+    @media (max-width: 600px) {
+      .header h1 { font-size: 22px; }
+      .form-container { padding: 24px 16px 48px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="submitting-overlay" id="overlay">Sending...</div>
+
+<div class="header">
+  <div class="logo">NON EST</div>
+  <h1>Restaurant DNA</h1>
+  <p>This is your voice, your guests, your story — before we write a single word.</p>
+</div>
+
+<div id="form-wrapper">
+  <form id="dna-form" class="form-container" method="POST" action="https://non-est.app.n8n.cloud/webhook/dna-intake">
+
+    <!-- SECTION: CONTACT -->
+    <div class="section">
+      <div class="section-title">Contact</div>
+      <div class="field">
+        <label>Restaurant name <span class="req">*</span></label>
+        <input type="text" name="restaurant_name" required placeholder="The name as it appears on the door">
+      </div>
+      <div class="field">
+        <label>Your name <span class="req">*</span></label>
+        <input type="text" name="contact_name" required>
+      </div>
+      <div class="field">
+        <label>Your role</label>
+        <input type="text" name="contact_role" placeholder="Owner, GM, Chef...">
+      </div>
+      <div class="field">
+        <label>Email <span class="req">*</span></label>
+        <input type="email" name="contact_email" required>
+      </div>
+      <div class="field">
+        <label>WhatsApp number</label>
+        <input type="tel" name="contact_whatsapp" placeholder="+34 600 000 000">
+      </div>
+    </div>
+
+    <!-- SECTION: PERSONALITY -->
+    <div class="section">
+      <div class="section-title">Personality &amp; Feeling</div>
+      <div class="field">
+        <label>Which words describe your restaurant's personality? (choose all that apply)</label>
+        <div class="multi-select">
+          <label><input type="checkbox" name="personality" value="warm"> Warm</label>
+          <label><input type="checkbox" name="personality" value="bold"> Bold</label>
+          <label><input type="checkbox" name="personality" value="minimal"> Minimal</label>
+          <label><input type="checkbox" name="personality" value="playful"> Playful</label>
+          <label><input type="checkbox" name="personality" value="direct"> Direct</label>
+          <label><input type="checkbox" name="personality" value="poetic"> Poetic</label>
+          <label><input type="checkbox" name="personality" value="sophisticated"> Sophisticated</label>
+          <label><input type="checkbox" name="personality" value="earthy"> Earthy</label>
+          <label><input type="checkbox" name="personality" value="irreverent"> Irreverent</label>
+          <label><input type="checkbox" name="personality" value="local"> Local</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Describe your restaurant's personality in your own words</label>
+        <textarea name="personality_description" placeholder="As if you were introducing it to a friend..."></textarea>
+      </div>
+      <div class="field">
+        <label>How do you want guests to feel when they're inside?</label>
+        <div class="multi-select">
+          <label><input type="checkbox" name="feeling" value="at-home"> At home</label>
+          <label><input type="checkbox" name="feeling" value="special"> Special / celebrated</label>
+          <label><input type="checkbox" name="feeling" value="surprised"> Surprised</label>
+          <label><input type="checkbox" name="feeling" value="understood"> Understood</label>
+          <label><input type="checkbox" name="feeling" value="energized"> Energized</label>
+          <label><input type="checkbox" name="feeling" value="calm"> Calm</label>
+          <label><input type="checkbox" name="feeling" value="adventurous"> Adventurous</label>
+          <label><input type="checkbox" name="feeling" value="other"> Other</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>If you chose "other", describe it</label>
+        <input type="text" name="feeling_other">
+      </div>
+    </div>
+
+    <!-- SECTION: COMMUNICATION STYLE -->
+    <div class="section">
+      <div class="section-title">Communication Style</div>
+      <div class="field">
+        <label>How does your restaurant communicate?</label>
+        <div class="multi-select">
+          <label><input type="checkbox" name="comm_style" value="warm-personal"> Warm &amp; personal</label>
+          <label><input type="checkbox" name="comm_style" value="cool-clean"> Cool &amp; clean</label>
+          <label><input type="checkbox" name="comm_style" value="storytelling"> Story-driven</label>
+          <label><input type="checkbox" name="comm_style" value="direct-no-fluff"> Direct, no fluff</label>
+          <label><input type="checkbox" name="comm_style" value="witty"> Witty / playful</label>
+          <label><input type="checkbox" name="comm_style" value="poetic"> Poetic</label>
+          <label><input type="checkbox" name="comm_style" value="educational"> Educational</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>After reading your menu or Instagram, a guest should feel...</label>
+        <textarea name="reader_feeling" placeholder="e.g. 'Like they already know us and want to come'"></textarea>
+      </div>
+    </div>
+
+    <!-- SECTION: GUESTS -->
+    <div class="section">
+      <div class="section-title">Their Guests</div>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:24px;">Describe up to 4 types of guests who visit you. Give each a name and a brief portrait.</p>
+
+      <div class="guest-block">
+        <h4>Guest type 1</h4>
+        <div class="field">
+          <label>Name / label for this guest</label>
+          <input type="text" name="guest_1_name" placeholder="e.g. 'The Saturday Family'">
+        </div>
+        <div class="field">
+          <label>Describe them</label>
+          <textarea name="guest_1_desc" placeholder="Who are they, what do they want, how do they behave?" style="min-height:80px;"></textarea>
+        </div>
+      </div>
+
+      <div class="guest-block">
+        <h4>Guest type 2</h4>
+        <div class="field">
+          <label>Name / label</label>
+          <input type="text" name="guest_2_name">
+        </div>
+        <div class="field">
+          <label>Describe them</label>
+          <textarea name="guest_2_desc" style="min-height:80px;"></textarea>
+        </div>
+      </div>
+
+      <div class="guest-block">
+        <h4>Guest type 3 (optional)</h4>
+        <div class="field">
+          <label>Name / label</label>
+          <input type="text" name="guest_3_name">
+        </div>
+        <div class="field">
+          <label>Describe them</label>
+          <textarea name="guest_3_desc" style="min-height:80px;"></textarea>
+        </div>
+      </div>
+
+      <div class="guest-block">
+        <h4>Guest type 4 (optional)</h4>
+        <div class="field">
+          <label>Name / label</label>
+          <input type="text" name="guest_4_name">
+        </div>
+        <div class="field">
+          <label>Describe them</label>
+          <textarea name="guest_4_desc" style="min-height:80px;"></textarea>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Which guest type would you most like to grow?</label>
+        <input type="text" name="guests_grow" placeholder="Guest type name or description">
+      </div>
+    </div>
+
+    <!-- SECTION: INSPIRATION -->
+    <div class="section">
+      <div class="section-title">Inspiration &amp; Competitors</div>
+      <div class="field">
+        <label>What restaurants, brands, or people inspire the way you communicate?</label>
+        <textarea name="inspiration" placeholder="Can be restaurants, chefs, brands outside hospitality, artists..."></textarea>
+      </div>
+      <div class="field">
+        <label>What specifically do you admire about them?</label>
+        <textarea name="inspiration_story"></textarea>
+      </div>
+      <div class="field">
+        <label>Who are your main competitors? (names or descriptions)</label>
+        <textarea name="competitors"></textarea>
+      </div>
+      <div class="field">
+        <label>What do they do well, and where do you feel you're different?</label>
+        <textarea name="competitors_why"></textarea>
+      </div>
+    </div>
+
+    <!-- SECTION: TOOLS & ASSETS -->
+    <div class="section">
+      <div class="section-title">Current Tools &amp; Assets</div>
+      <div class="field">
+        <label>Which tools do you currently use to communicate with guests?</label>
+        <div class="multi-select">
+          <label><input type="checkbox" name="tools" value="instagram"> Instagram</label>
+          <label><input type="checkbox" name="tools" value="google"> Google My Business</label>
+          <label><input type="checkbox" name="tools" value="tripadvisor"> TripAdvisor</label>
+          <label><input type="checkbox" name="tools" value="thefork"> TheFork / ElTenedor</label>
+          <label><input type="checkbox" name="tools" value="email"> Email / Newsletter</label>
+          <label><input type="checkbox" name="tools" value="whatsapp"> WhatsApp</label>
+          <label><input type="checkbox" name="tools" value="web"> Website</label>
+          <label><input type="checkbox" name="tools" value="other"> Other</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Any specific tool names / accounts?</label>
+        <input type="text" name="tools_names" placeholder="e.g. @restaurant on Instagram">
+      </div>
+      <div class="field">
+        <label>Other tools not listed above</label>
+        <input type="text" name="tools_other">
+      </div>
+      <div class="field">
+        <label>What assets do you already have?</label>
+        <div class="multi-select">
+          <label><input type="checkbox" name="assets" value="photos"> Professional photos</label>
+          <label><input type="checkbox" name="assets" value="video"> Video material</label>
+          <label><input type="checkbox" name="assets" value="menu-pdf"> Menu PDF</label>
+          <label><input type="checkbox" name="assets" value="logo"> Logo / brand kit</label>
+          <label><input type="checkbox" name="assets" value="website"> Working website</label>
+          <label><input type="checkbox" name="assets" value="none"> None yet</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Notes about your assets</label>
+        <textarea name="assets_notes" placeholder="e.g. Photos are 2 years old, no videos yet..."></textarea>
+      </div>
+    </div>
+
+    <!-- SECTION: VISION -->
+    <div class="section">
+      <div class="section-title">Open Notes &amp; Vision</div>
+      <div class="field">
+        <label>Is there anything else you'd like us to know before we start?</label>
+        <textarea name="anything_else" style="min-height:120px;" placeholder="Context, history, things that have worked or not, pet peeves..."></textarea>
+      </div>
+      <div class="field">
+        <label>What does success look like in 12 months?</label>
+        <textarea name="success_12mo" style="min-height:100px;" placeholder="More of a certain type of guest? Better review scores? A full Saturday? Tell us..."></textarea>
+      </div>
+    </div>
+
+    <input type="hidden" name="_source" value="nonest-dna-intake">
+    <input type="hidden" name="_submitted_at" id="submitted_at_field">
+
+    <div class="field">
+      <button type="submit" class="submit-btn" id="submit-btn">Send my DNA →</button>
+      <div class="error-msg" id="error-msg">Something went wrong. Please try again or contact us directly.</div>
+    </div>
+
+  </form>
+</div>
+
+<div class="success-screen" id="success-screen">
+  <div style="font-size:48px;margin-bottom:24px;">✓</div>
+  <h2>Thank you.</h2>
+  <p>We've received your restaurant's DNA.<br>We'll be in touch shortly to schedule your first session.</p>
+  <p style="margin-bottom:32px;font-size:14px;color:var(--muted);">Want to send us photos, menus, or any assets in the meantime?</p>
+  <a class="whatsapp-cta" id="whatsapp-link" href="https://wa.me/34670358884" target="_blank">
+    Send via WhatsApp →
+  </a>
+</div>
+
+<script>
+  // Set submission timestamp
+  document.getElementById('submitted_at_field').value = new Date().toISOString();
+
+  const form = document.getElementById('dna-form');
+  const overlay = document.getElementById('overlay');
+  const successScreen = document.getElementById('success-screen');
+  const formWrapper = document.getElementById('form-wrapper');
+  const submitBtn = document.getElementById('submit-btn');
+  const errorMsg = document.getElementById('error-msg');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    overlay.classList.add('visible');
+    errorMsg.style.display = 'none';
+
+    // Update timestamp
+    document.getElementById('submitted_at_field').value = new Date().toISOString();
+
+    // Collect form data
+    const data = {};
+    const formData = new FormData(form);
+    
+    // Handle checkboxes as arrays
+    const checkboxFields = {};
+    form.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+      if (!checkboxFields[cb.name]) checkboxFields[cb.name] = [];
+      checkboxFields[cb.name].push(cb.value);
+    });
+
+    for (const [key, value] of formData.entries()) {
+      if (!checkboxFields[key]) {
+        data[key] = value;
+      }
+    }
+    Object.assign(data, checkboxFields);
+
+    try {
+      const response = await fetch('https://non-est.app.n8n.cloud/webhook/dna-intake', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        overlay.classList.remove('visible');
+        formWrapper.style.display = 'none';
+        successScreen.classList.add('visible');
+        window.scrollTo(0, 0);
+      } else {
+        throw new Error('HTTP ' + response.status);
+      }
+    } catch (err) {
+      overlay.classList.remove('visible');
+      submitBtn.disabled = false;
+      errorMsg.style.display = 'block';
+      console.error('Submission error:', err);
+    }
+  });
+</script>
+
+</body>
+</html>
