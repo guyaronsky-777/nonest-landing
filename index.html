@@ -97,10 +97,8 @@ nav { gap: 24px; font-size: 10px; flex-wrap: wrap; justify-content: center; }
   width: 100vw; height: 100vh;
   pointer-events: none;
   z-index: 998;
-  opacity: 0;
-  transition: opacity 0.4s ease;
 }
-#spotlight-canvas.on { opacity: 1; }
+
 .logo-icon.lit {
   box-shadow: 0 0 60px rgba(212,168,67,1), 0 0 120px rgba(212,168,67,0.6), 0 0 200px rgba(212,168,67,0.25) !important;
   transition: box-shadow 0.4s ease;
@@ -455,12 +453,13 @@ alert('Something went wrong. Please try again, or email us at hello@non-est.co.'
       word.style.textShadow = '0 0 25px rgba(255,220,80,1), 0 0 55px rgba(212,168,67,0.85), 0 0 90px rgba(212,168,67,0.5)';
       word.style.color = '#fff8d0';
     }
-    cv.classList.add('on');
   }
-  window.addEventListener('load', function(){ drawSpotlights(); });
+  document.addEventListener('DOMContentLoaded', drawSpotlights);
+  window.addEventListener('load', drawSpotlights);
   window.addEventListener('resize', drawSpotlights);
-  setTimeout(drawSpotlights, 300);
-  setTimeout(drawSpotlights, 800);
+  setTimeout(drawSpotlights, 100);
+  setTimeout(drawSpotlights, 500);
+  setTimeout(drawSpotlights, 1200);
 })();
 </script>
 </body>
