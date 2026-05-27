@@ -1,71 +1,374 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Web Dominance Score</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: system-ui; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; padding: 20px; }
-    .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
-    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 60px 30px; text-align: center; }
-    .header h1 { font-size: 36px; margin-bottom: 16px; }
-    .form-section { padding: 40px 30px; }
-    .form-title { font-size: 20px; font-weight: 600; margin-bottom: 24px; }
-    .form-group { margin-bottom: 20px; }
-    label { display: block; font-weight: 600; margin-bottom: 8px; }
-    input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 16px; }
-    input:focus { outline: none; border-color: #667eea; }
-    .submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
-    .results { padding: 40px 30px; display: none; border-top: 2px solid #e2e8f0; }
-    .results.show { display: block; }
-    .score-box { background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); border: 2px solid #667eea; border-radius: 12px; padding: 30px; text-align: center; margin-bottom: 24px; }
-    .score-number { font-size: 56px; font-weight: 700; color: #667eea; }
-    .revenue-number { font-size: 40px; font-weight: 700; color: #c53030; }
-    .cta-button { width: 100%; padding: 16px; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NON EST — Restaurant Digital Visibility</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+body { background: #0d0d0d; color: #f5f2ec; font-family: 'DM Sans', sans-serif; line-height: 1.6; letter-spacing: 0.3px; }
+header { padding: 32px 40px 24px; display: flex; flex-direction: column; align-items: center; gap: 24px; border-bottom: 1px solid #2a2a2a; backdrop-filter: blur(12px); background: rgba(13, 13, 13, 0.92); position: sticky; top: 0; z-index: 1000; }
+.logo { display: flex; align-items: center; gap: 24px; cursor: pointer; transition: transform 0.3s ease; }
+.logo:hover { transform: translateY(-2px); }
+.logo-icon { width: 88px; height: 44px; background: #d4a843; border-radius: 22px; position: relative; box-shadow: 0 0 30px rgba(212, 168, 67, 0.45), 0 0 60px rgba(212, 168, 67, 0.15); }
+.logo-icon::after { content: ''; position: absolute; width: 32px; height: 32px; background: #fff8e8; border-radius: 50%; right: 6px; top: 6px; box-shadow: 0 3px 12px rgba(0, 0, 0, 0.5); }
+.logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 56px; letter-spacing: 0.12em; font-weight: 400; line-height: 1; }
+.logo-text span { color: #d4a843; }
+.logo-tagline { display: block; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.22em; color: #999; margin-top: 8px; text-transform: uppercase; }
+nav { display: flex; gap: 56px; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; justify-content: center; }
+nav a { color: #999; text-decoration: none; transition: color 0.3s; cursor: pointer; }
+nav a:hover { color: #d4a843; }
+.hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 80px 60px; text-align: center; position: relative; overflow: hidden; background: radial-gradient(ellipse at 50% 35%, rgba(212, 168, 67, 0.06) 0%, transparent 50%), #0d0d0d; }
+.hero::before { content: ''; position: absolute; top: -30%; right: -15%; width: 800px; height: 800px; background: radial-gradient(circle, rgba(212, 168, 67, 0.18) 0%, rgba(212, 168, 67, 0.05) 30%, transparent 70%); border-radius: 50%; z-index: 0; filter: blur(20px); }
+.hero::after { content: ''; position: absolute; bottom: -40%; left: -20%; width: 700px; height: 700px; background: radial-gradient(circle, rgba(212, 168, 67, 0.12) 0%, transparent 70%); border-radius: 50%; z-index: 0; filter: blur(30px); }
+.hero-content { max-width: 900px; position: relative; z-index: 1; }
+.hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: 72px; letter-spacing: 0.05em; line-height: 1.1; margin-bottom: 24px; font-weight: 400; }
+.hero h1 span { color: #d4a843; }
+.hero-tagline { font-size: 18px; color: #d4a843; margin-bottom: 32px; font-weight: 400; letter-spacing: 0.3px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.hero-subtitle { font-size: 16px; color: #999; margin-bottom: 24px; font-weight: 300; letter-spacing: 0.4px; line-height: 1.8; max-width: 600px; margin-left: auto; margin-right: auto; }
+.urgency-note { font-size: 13px; color: #d4a843; margin-bottom: 48px; font-weight: 400; letter-spacing: 0.5px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.cta-button { display: inline-block; padding: 16px 48px; background: #d4a843; color: #0a0a0a; border: none; border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 24px rgba(212, 168, 67, 0.2); }
+.cta-button:hover { box-shadow: 0 12px 36px rgba(212, 168, 67, 0.35); transform: translateY(-2px); }
+.form-section { background: linear-gradient(180deg, #161616 0%, #131313 100%); padding: 100px 60px; border-top: 1px solid #2a2a2a; border-bottom: 1px solid #2a2a2a; position: relative; }
+.form-section::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 500px; height: 500px; background: radial-gradient(circle, rgba(212, 168, 67, 0.04) 0%, transparent 70%); pointer-events: none; }
+.form-container { max-width: 500px; margin: 0 auto; position: relative; z-index: 1; }
+.section-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #999; display: block; margin-bottom: 24px; }
+.section-title { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 0.05em; margin-bottom: 16px; line-height: 1.2; }
+.section-desc { font-size: 14px; color: #999; margin-bottom: 48px; line-height: 1.8; font-weight: 300; }
+.form-group { margin-bottom: 24px; }
+.form-group label { display: block; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+.form-group input { width: 100%; padding: 14px 16px; background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 4px; color: #f5f2ec; font-family: 'DM Sans', sans-serif; font-size: 14px; transition: all 0.3s; }
+.form-group input:focus { outline: none; border-color: #d4a843; box-shadow: 0 0 12px rgba(212, 168, 67, 0.15); }
+.form-group input::placeholder { color: #444; }
+.features-section { padding: 120px 60px; background: linear-gradient(180deg, #0d0d0d 0%, #111111 100%); }
+.features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 1280px; margin: 0 auto; }
+@media (min-width: 1100px) { .features-grid { grid-template-columns: repeat(4, 1fr); } }
+.feature { border-left: 2px solid #d4a843; padding: 24px 24px 24px 28px; background: rgba(212, 168, 67, 0.025); border-radius: 0 12px 12px 0; transition: all 0.3s ease; }
+.feature:hover { background: rgba(212, 168, 67, 0.06); transform: translateX(4px); }
+.feature-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.05em; margin-bottom: 16px; color: #d4a843; line-height: 1.2; }
+.feature-text { font-size: 14px; color: #b8b8b8; line-height: 1.75; font-weight: 300; }
+.how-section { padding: 140px 60px; background: linear-gradient(180deg, #141414 0%, #181818 100%); border-top: 1px solid #2a2a2a; border-bottom: 1px solid #2a2a2a; }
+.how-title { font-family: 'Bebas Neue', sans-serif; font-size: 64px; text-align: center; letter-spacing: 0.05em; margin-bottom: 100px; line-height: 1.05; }
+.steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 56px; max-width: 1240px; margin: 0 auto; }
+.step { text-align: center; padding: 40px 24px; background: rgba(212, 168, 67, 0.025); border: 1px solid rgba(212, 168, 67, 0.08); border-radius: 16px; transition: all 0.3s ease; }
+.step:hover { background: rgba(212, 168, 67, 0.05); border-color: rgba(212, 168, 67, 0.2); transform: translateY(-4px); }
+.step-number { font-family: 'Bebas Neue', sans-serif; font-size: 88px; letter-spacing: 0.04em; color: #d4a843; margin-bottom: 24px; line-height: 1; text-shadow: 0 0 32px rgba(212, 168, 67, 0.2); }
+.step-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.06em; margin-bottom: 20px; color: #f5f2ec; }
+.step-desc { font-size: 15px; color: #b8b8b8; line-height: 1.75; font-weight: 300; }
+.pricing-section { padding: 120px 60px; background: linear-gradient(180deg, #0d0d0d 0%, #111111 100%); position: relative; }
+.pricing-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; text-align: center; letter-spacing: 0.05em; margin-bottom: 80px; }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1100px; margin: 0 auto; }
+.price-card { background: #0f0f0f; padding: 48px 40px; border: 1px solid #1a1a1a; border-radius: 4px; transition: all 0.3s; position: relative; }
+.price-card:hover { border-color: #d4a843; box-shadow: 0 12px 48px rgba(212, 168, 67, 0.1); }
+.price-card.featured { border-color: #d4a843; box-shadow: 0 12px 48px rgba(212, 168, 67, 0.15); transform: translateY(-8px); }
+.price-card.featured::before { content: 'MOST POPULAR'; position: absolute; top: -12px; left: 24px; background: #d4a843; color: #0a0a0a; padding: 4px 12px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em; font-weight: 500; }
+.price-name { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 0.08em; margin-bottom: 12px; }
+.price-amount { font-size: 36px; color: #d4a843; margin-bottom: 4px; font-weight: 600; }
+.price-period { font-size: 12px; color: #999; margin-bottom: 32px; }
+.price-features { list-style: none; margin-bottom: 32px; }
+.price-features li { padding: 8px 0; border-bottom: 1px solid #1a1a1a; font-size: 12px; color: #999; font-weight: 300; }
+.price-features li:before { content: '✓ '; color: #d4a843; margin-right: 8px; }
+footer { padding: 60px; text-align: center; border-top: 1px solid #1a1a1a; background: #0a0a0a; }
+.footer-text { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #999; }
+@media (max-width: 768px) {
+header { padding: 24px 20px 20px; gap: 18px; }
+.logo { gap: 16px; }
+.logo-icon { width: 60px; height: 30px; border-radius: 15px; }
+.logo-icon::after { width: 22px; height: 22px; right: 4px; top: 4px; }
+.logo-text { font-size: 38px; }
+.logo-tagline { font-size: 9px; }
+nav { gap: 24px; font-size: 10px; flex-wrap: wrap; justify-content: center; }
+.hero { padding: 60px 24px; min-height: 70vh; }
+.hero h1 { font-size: 42px; }
+.features-grid, .pricing-grid { grid-template-columns: 1fr; }
+.steps-grid { grid-template-columns: 1fr; gap: 24px; }
+.step-number { font-size: 64px; }
+.step-title { font-size: 24px; }
+.how-title { font-size: 44px; margin-bottom: 60px; }
+.form-section, .features-section, .how-section, .pricing-section { padding: 60px 24px; }
+}
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>Is Your Restaurant Invisible?</h1>
-      <p>We fix that in 30 days.</p>
-    </div>
-    <div class="form-section">
-      <h2 class="form-title">Get Your Free Web Dominance Score</h2>
-      <form id="scoreForm">
-        <div class="form-group">
-          <label>Restaurant Name</label>
-          <input type="text" placeholder="Deli Santa Maria" required>
-        </div>
-        <div class="form-group">
-          <label>Website</label>
-          <input type="text" placeholder="deli-caffe.com" required>
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" placeholder="your@email.com" required>
-        </div>
-        <button type="submit" class="submit-btn">Get Your Score</button>
-      </form>
-    </div>
-    <div class="results" id="results">
-      <h3>Your Web Dominance Score</h3>
-      <div class="score-box">
-        <div class="score-number">77</div>
-        <div class="score-label">GOOD</div>
-      </div>
-      <div class="revenue-loss">
-        <p>Monthly Revenue at Risk:</p>
-        <div class="revenue-number">€10,350</div>
-      </div>
-      <button class="cta-button" onclick="window.open('https://calendly.com/nonest/30min')">Schedule Call</button>
-    </div>
-  </div>
-  <script>
-    document.getElementById('scoreForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      document.getElementById('results').classList.add('show');
-      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
-    });
-  </script>
+<header>
+<div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+<div class="logo-icon"></div>
+<div>
+<div class="logo-text">NON <span>EST</span></div>
+<span class="logo-tagline">Restaurant Digital Visibility</span>
+</div>
+</div>
+<nav>
+<a href="#how-it-works">How It Works</a>
+<a href="#features">Why Us</a>
+<a href="#pricing">Pricing</a>
+<a href="#contact">Contact</a>
+</nav>
+</header>
+
+<section class="hero">
+<div class="hero-content">
+<h1>If you're not visible<br><span>you don't exist.</span></h1>
+<p class="hero-tagline">Your restaurant should be the first answer.<br/>On Google, Instagram, TripAdvisor, ChatGPT, Siri, every map.</p>
+<p class="hero-subtitle">NON EST manages your entire digital presence — across 60+ channels, every review platform, every AI search surface. You handle the food and the room. We handle everything else.</p>
+<p class="urgency-note">Most restaurants are missing from 30-50% of the channels their customers actually use. The ones who fix it eat first.</p>
+<button class="cta-button" onclick="document.querySelector('.form-section').scrollIntoView({behavior:'smooth'})">Run My Free Audit</button>
+<p style="margin-top: 32px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #999;">Built and operated by humans — not a SaaS platform.<br/><span style="color: #d4a843;">You'll have us on WhatsApp the day you sign.</span></p>
+</div>
+</section>
+
+<section class="proof-section" style="background: linear-gradient(180deg, #0d0d0d 0%, #111111 100%); padding: 120px 60px; border-top: 1px solid #2a2a2a; position: relative;">
+<div style="position: absolute; top: 20%; left: 10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(212, 168, 67, 0.06) 0%, transparent 70%); pointer-events: none; filter: blur(40px);"></div>
+<div style="max-width: 1100px; margin: 0 auto; text-align: center; position: relative;">
+<div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #d4a843; margin-bottom: 24px;">Real audit · Real restaurant</div>
+<h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 56px; letter-spacing: 0.05em; color: #f5f2ec; line-height: 1.05; margin-bottom: 24px;">This is what we deliver.<br/><span style="color: #d4a843;">Not a sales pitch.</span></h2>
+<p style="font-size: 16px; color: #999; max-width: 720px; margin: 0 auto 60px; line-height: 1.7;">A complete NON EST digital audit for Le Pita Amsterdam. A real restaurant, scored across 10 categories, with a real €252,000/year revenue gap diagnosed. Scroll through it — this is the same report that lands in your inbox after you submit the form above.</p>
+<div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 24px 80px rgba(212, 168, 67, 0.15);">
+<iframe src="Le_Pita_Styled_Report.html" style="width: 100%; height: 720px; border: none; display: block;"></iframe>
+</div>
+<p style="font-size: 12px; color: #666; margin-top: 24px; font-family: 'DM Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase;">↑ Scroll inside the report. Every number is real.</p>
+</div>
+</section>
+
+<section class="form-section">
+<div class="form-container">
+<span class="section-label">Free Audit</span>
+<h2 class="section-title">Run a NON EST audit<br><span style="color: #d4a843;">on your restaurant.</span></h2>
+<p class="section-desc">We'll map your digital presence across every channel that exists — Google, Apple Maps, TripAdvisor, TheFork, Instagram, ChatGPT, Siri, and 60+ more. Then we'll show you exactly what's missing, what's broken, and what to fix first. No call. No catch. In your inbox in minutes.</p>
+<form id="audit-form">
+<div class="form-group">
+<label>Restaurant Name *</label>
+<input type="text" name="restaurant_name" placeholder="e.g., Osteria Milano" required>
+</div>
+<div class="form-group">
+<label>City *</label>
+<input type="text" name="city" placeholder="e.g., Amsterdam, Netherlands" required>
+</div>
+<div class="form-group">
+<label>Website URL</label>
+<input type="url" name="website" placeholder="e.g., www.osteriamilano.com">
+</div>
+<div class="form-group">
+<label>Email Address *</label>
+<input type="email" name="email" placeholder="owner@restaurant.com" required>
+</div>
+<div class="form-group">
+<label>Additional Info (optional)</label>
+<textarea name="additional_info" placeholder="Instagram handle, Google Business link, anything that helps us audit you better" rows="3" style="width: 100%; padding: 16px; border: 2px solid #1a1a1a; border-radius: 8px; font-size: 14px; font-family: inherit; resize: vertical; background: #0a0a0a; color: #f5f2ec; transition: all 0.3s;" onfocus="this.style.borderColor='#d4a843'; this.style.boxShadow='0 0 0 3px rgba(212, 168, 67, 0.1)'" onblur="this.style.borderColor='#1a1a1a'; this.style.boxShadow='none'"></textarea>
+</div>
+<button type="submit" class="cta-button" style="width: 100%;">Calculate My Loss</button>
+</form>
+<p style="text-align: center; font-size: 11px; color: #666; margin-top: 24px; font-family: 'DM Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase;">Takes 2 minutes. No call required. Your audit lands in your inbox.</p>
+</div>
+</section>
+
+<section class="features-section" id="features">
+<div style="text-align: center; margin-bottom: 80px;">
+<div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #d4a843; margin-bottom: 24px;">Every month · Every channel · Every surface</div>
+<h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 0.05em; color: #f5f2ec; line-height: 1.05;">We handle your entire<br/>digital reality.</h2>
+<p style="font-size: 16px; color: #999; max-width: 680px; margin: 32px auto 0; line-height: 1.7;">This isn't social media management. It's complete ownership of how your restaurant shows up — on search, on maps, on reviews, on AI, on social, everywhere.</p>
+</div>
+<div class="features-grid">
+<div class="feature">
+<div class="feature-title">Google Business Profile</div>
+<p class="feature-text">When someone Googles your restaurant, you're the first thing they see — with the right hours, the right photos, the right menu. Updated weekly. Q&amp;A monitored. Local pack optimized.</p>
+</div>
+<div class="feature">
+<div class="feature-title">60+ Channel Sync</div>
+<p class="feature-text">One update from us cascades everywhere — Apple Maps, Bing, TripAdvisor, TheFork, Yelp, OpenStreetMap, HERE, TomTom, Foursquare, Facebook Places, and 50 more.</p>
+</div>
+<div class="feature">
+<div class="feature-title">Reviews &amp; Reputation</div>
+<p class="feature-text">Every review — five-star or one-star — gets answered the same day, in your restaurant's voice. Every review becomes data feeding your search rankings and training AI systems to recommend you.</p>
+</div>
+<div class="feature">
+<div class="feature-title">AI Visibility</div>
+<p class="feature-text">When a tourist asks ChatGPT "best tapas in Palma" or asks Siri for tonight's dinner, your name comes up. We optimize for AI search the way we used to optimize for Google.</p>
+</div>
+<div class="feature">
+<div class="feature-title">Social Media</div>
+<p class="feature-text">Your Instagram looks alive. 3-5 posts per week on the platforms that matter for you. Reels, stories, captions written in your restaurant's voice. Posted while you're cooking.</p>
+</div>
+<div class="feature">
+<div class="feature-title">AI-Readable Restaurant</div>
+<p class="feature-text">We install the technical layer that makes AI systems understand your restaurant — your cuisine, your hours, your menu, your dietary tags, your price range. Most restaurants don't have it.</p>
+</div>
+<div class="feature">
+<div class="feature-title">Content &amp; Authority</div>
+<p class="feature-text">Quarterly long-form articles published on your own website — written in your voice, structured so AI systems, search engines, food bloggers, and journalists discover you first.</p>
+</div>
+<div class="feature">
+<div class="feature-title">Monthly Intelligence Report + Call</div>
+<p class="feature-text">Once a month, you get a clear one-page report — your score, what improved, what your competitors did, what's coming next. Then we get on a call to walk you through it together.</p>
+</div>
+</div>
+</section>
+
+<section class="how-section" id="how-it-works">
+<h2 class="how-title">Here's How It Works</h2>
+<div class="steps-grid">
+<div class="step">
+<div class="step-number">01</div>
+<div class="step-title">Analyze</div>
+<div class="step-desc">We calculate your real visibility loss. How much money you're missing. Compare you to competitors. Show you exactly what's wrong.</div>
+</div>
+<div class="step">
+<div class="step-number">02</div>
+<div class="step-title">Join Us</div>
+<div class="step-desc">Choose Essential, Growth, or Premium. Month-to-month contract. No long-term lock-in. We want to prove ourselves.</div>
+</div>
+<div class="step">
+<div class="step-number">03</div>
+<div class="step-title">We Execute</div>
+<div class="step-desc">Week 1: onboarding. Week 2: first posts live. Week 3: reviews getting responses. You film content. We handle the rest.</div>
+</div>
+<div class="step">
+<div class="step-number">04</div>
+<div class="step-title">Results</div>
+<div class="step-desc">Month 1: more calls. Month 2: first customers from visibility. Month 3+: predictable growth. See the proof.</div>
+</div>
+</div>
+</section>
+
+<section class="pricing-section" id="pricing">
+<h2 class="pricing-title">Three tiers.<br/>One outcome: you stop disappearing.</h2>
+<div style="text-align: center; margin-bottom: 60px; max-width: 680px; margin-left: auto; margin-right: auto;">
+<p style="font-size: 14px; color: #999; line-height: 1.8;">Every tier includes the full digital reality stack — Google Business Profile, 60+ channel sync, review management, AI visibility, schema, and monthly intelligence report.</p>
+</div>
+<div class="pricing-grid">
+<div class="price-card">
+<div class="price-name">Essential</div>
+<div class="price-amount">€349</div>
+<div class="price-period">per month</div>
+<p style="font-size: 12px; color: #999; margin-bottom: 24px; line-height: 1.6;">For restaurants who need the foundation done right. You stop being invisible. You stay accurate everywhere. You sleep at night.</p>
+<ul class="price-features">
+<li>Google Business Profile fully managed</li>
+<li>60+ channel sync (Apple Maps, Bing, TripAdvisor, TheFork, Yelp, OpenStreetMap, HERE, TomTom, Foursquare, Facebook Places, and 50 more)</li>
+<li>Review monitoring + response drafts (you approve)</li>
+<li>Schema markup installed and maintained</li>
+<li>Basic AI visibility setup (ChatGPT, Perplexity, Google AI)</li>
+<li>Monthly NON EST intelligence report</li>
+<li>Quarterly competitor scan</li>
+<li>Email support</li>
+</ul>
+<p style="font-size: 11px; color: #d4a843; margin: 24px 0; text-align: center; font-family: 'DM Mono', monospace; letter-spacing: 0.1em;">The foundation tier</p>
+<button class="cta-button" style="width: 100%;" onclick="document.getElementById('audit-form').scrollIntoView({behavior:'smooth'})">Start Essential</button>
+</div>
+<div class="price-card featured">
+<div class="price-name">Growth</div>
+<div class="price-amount">€699</div>
+<div class="price-period">per month</div>
+<p style="font-size: 12px; color: #999; margin-bottom: 24px; line-height: 1.6;">The sweet spot. Most restaurants choose this. Full foundation plus an active social presence and review responses posted in your voice.</p>
+<ul class="price-features">
+<li><strong style="color: #d4a843;">Everything in Essential, plus:</strong></li>
+<li>3 social posts per week (Instagram + Google Posts)</li>
+<li>Review responses written and posted (not just drafted)</li>
+<li>Advanced AI visibility — appearing in ChatGPT, Perplexity, Gemini, Siri results</li>
+<li>Quarterly long-form article published on your website</li>
+<li>Monthly 30-min strategy call</li>
+<li>Weekly WhatsApp updates from your NON EST manager</li>
+<li>Performance dashboard access</li>
+</ul>
+<p style="font-size: 11px; color: #d4a843; margin: 24px 0; text-align: center; font-family: 'DM Mono', monospace; letter-spacing: 0.1em;">Most restaurants choose this</p>
+<button class="cta-button" style="width: 100%;" onclick="document.getElementById('audit-form').scrollIntoView({behavior:'smooth'})">Start Growth</button>
+</div>
+<div class="price-card">
+<div class="price-name">Premium</div>
+<div class="price-amount">€1,499</div>
+<div class="price-period">per month</div>
+<p style="font-size: 12px; color: #999; margin-bottom: 24px; line-height: 1.6;">For ambitious restaurants ready to become the category leader. Full ownership of your digital reality, plus content depth, strategic guidance, and the deep work that compounds over time.</p>
+<ul class="price-features">
+<li><strong style="color: #d4a843;">Everything in Growth, plus:</strong></li>
+<li>5 social posts per week + 2 Reels per month</li>
+<li>Monthly long-form articles + signature content series</li>
+<li>Influencer partnership coordination</li>
+<li>Quarterly photoshoot direction</li>
+<li>Crisis communication management</li>
+<li>Biweekly 30-min strategy call</li>
+<li>Annual "State of Reality" deep report</li>
+</ul>
+<p style="font-size: 11px; color: #d4a843; margin: 24px 0; text-align: center; font-family: 'DM Mono', monospace; letter-spacing: 0.1em;">For category-leading restaurants</p>
+<button class="cta-button" style="width: 100%;" onclick="document.getElementById('audit-form').scrollIntoView({behavior:'smooth'})">Start Premium</button>
+</div>
+</div>
+</section>
+
+<section class="pricing-section" style="border-top: 1px solid #1a1a1a; padding: 80px 60px;">
+<div style="text-align: center; max-width: 800px; margin: 0 auto;">
+<p style="font-size: 14px; color: #999; line-height: 1.8;">All tiers: 6-month minimum. Setup fee waived for restaurants signing this quarter. À la carte services available — multilingual SEO, specialized channels, crisis management retainers, and custom strategic projects.</p>
+</div>
+</section>
+
+<section id="contact" style="background: linear-gradient(180deg, #000 0%, #0a0a0a 100%); padding: 120px 60px; border-top: 1px solid #1a1a1a;">
+<div style="max-width: 900px; margin: 0 auto; text-align: center;">
+<div style="font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: #d4a843; margin-bottom: 32px;">The thing nobody else offers</div>
+<h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 64px; letter-spacing: 0.04em; color: #f5f2ec; line-height: 1.05; margin-bottom: 32px;">You'll have a human<br/><span style="color: #d4a843;">on the other end.</span></h2>
+<p style="font-size: 17px; color: #ccc; max-width: 720px; margin: 0 auto 48px; line-height: 1.75;">NON EST is not a SaaS dashboard. It's not a chatbot. Every restaurant we work with gets a real person — on WhatsApp, on the phone, on video — the day they sign. We explain. We answer. We listen.</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-top: 64px;">
+<div style="background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 12px; padding: 32px 24px;">
+<div style="font-size: 32px; margin-bottom: 12px;">📱</div>
+<div style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.04em; color: #d4a843; margin-bottom: 10px;">WhatsApp</div>
+<p style="font-size: 13px; color: #999; line-height: 1.6;">Direct line to your manager. Reply within hours, not days.</p>
+</div>
+<div style="background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 12px; padding: 32px 24px;">
+<div style="font-size: 32px; margin-bottom: 12px;">📞</div>
+<div style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.04em; color: #d4a843; margin-bottom: 10px;">Phone &amp; Video</div>
+<p style="font-size: 13px; color: #999; line-height: 1.6;">Real strategy calls. We walk you through everything we do.</p>
+</div>
+<div style="background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 12px; padding: 32px 24px;">
+<div style="font-size: 32px; margin-bottom: 12px;">📍</div>
+<div style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.04em; color: #d4a843; margin-bottom: 10px;">In Person</div>
+<p style="font-size: 13px; color: #999; line-height: 1.6;">Based in Mallorca. Spain &amp; EU clients visited as needed.</p>
+</div>
+</div>
+<p style="margin-top: 64px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #666;">No offense to AI — we use it every day —<br/>but the person you talk to is a person.</p>
+</div>
+</section>
+
+<footer>
+<p class="footer-text">© 2026 NON EST. Restaurant Digital Visibility. If you're not here — you don't exist.</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+const form = document.getElementById('audit-form');
+if (!form) return;
+const submitBtn = form.querySelector('button[type="submit"]');
+form.addEventListener('submit', async function (e) {
+e.preventDefault();
+const originalBtnText = submitBtn.textContent;
+submitBtn.textContent = 'Generating your audit…';
+submitBtn.disabled = true;
+form.style.opacity = '0.6';
+const data = {
+restaurant_name: form.querySelector('[name="restaurant_name"]').value,
+city: form.querySelector('[name="city"]').value,
+email: form.querySelector('[name="email"]').value,
+website: form.querySelector('[name="website"]')?.value || '',
+additional_info: form.querySelector('[name="additional_info"]')?.value || ''
+};
+try {
+const response = await fetch('https://non-est.app.n8n.cloud/webhook/audit-intake', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify(data)
+});
+if (response.ok) {
+form.innerHTML = '<div style="text-align:center; padding: 80px 30px; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 1px solid #d4a843; border-radius: 12px;"><div style="font-family: DM Mono, monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #d4a843; margin-bottom: 24px;">Request received</div><h2 style="font-family: Bebas Neue, sans-serif; font-size: 48px; letter-spacing: 0.04em; color: #f5f2ec; margin-bottom: 24px; line-height: 1.05;">Your audit is being<br/>generated.</h2><p style="font-size: 16px; color: #ccc; margin-bottom: 20px; line-height: 1.6;">We're analyzing <strong style="color: #d4a843;">' + data.restaurant_name + '</strong> across 60+ channels.</p><p style="font-size: 14px; color: #999; margin-bottom: 32px;">Your detailed report lands at <strong style="color: #f5f2ec;">' + data.email + '</strong> within a few minutes.</p><p style="font-family: DM Mono, monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #666;">If you're not here — you don't exist.</p></div>';
+} else {
+throw new Error('Server error: ' + response.status);
+}
+} catch (err) {
+console.error(err);
+submitBtn.textContent = originalBtnText;
+submitBtn.disabled = false;
+form.style.opacity = '1';
+alert('Something went wrong. Please try again, or email us at hello@non-est.co.');
+}
+});
+});
+</script>
 </body>
 </html>
