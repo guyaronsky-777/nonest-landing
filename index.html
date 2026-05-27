@@ -90,35 +90,28 @@ nav { gap: 24px; font-size: 10px; flex-wrap: wrap; justify-content: center; }
 .form-section, .features-section, .how-section, .pricing-section { padding: 60px 24px; }
 }
 
-/* Spotlight effect */
-#spotlight-beam {
+/* Real spotlight canvas */
+#spotlight-canvas {
   position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 320px;
-  height: 100vh;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
   pointer-events: none;
-  z-index: 999;
+  z-index: 998;
   opacity: 0;
-  transition: opacity 0.5s ease;
-  background: conic-gradient(from 180deg at 50% 0%, rgba(212,168,67,0.0) -20deg, rgba(212,168,67,0.22) 0deg, rgba(212,168,67,0.22) 20deg, rgba(212,168,67,0.0) 40deg);
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0) 100%);
-  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0) 100%);
+  transition: opacity 0.4s ease;
 }
-#spotlight-beam.active {
-  opacity: 1;
-}
+#spotlight-canvas.on { opacity: 1; }
 .logo-icon.lit {
-  box-shadow: 0 0 50px rgba(212,168,67,0.9), 0 0 100px rgba(212,168,67,0.5), 0 0 160px rgba(212,168,67,0.2) !important;
+  box-shadow: 0 0 60px rgba(212,168,67,1), 0 0 120px rgba(212,168,67,0.6), 0 0 200px rgba(212,168,67,0.25) !important;
+  transition: box-shadow 0.4s ease;
 }
 </style>
 </head>
 <body>
-<div id="spotlight-beam"></div>
+<canvas id="spotlight-canvas"></canvas>
 <header>
 <div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-<div class="logo-icon" id="logo-toggle" onclick="(function(){var b=document.getElementById('spotlight-beam');var i=document.getElementById('logo-toggle');b.classList.toggle('active');i.classList.toggle('lit');})()" style="cursor:pointer" title="Click me"></div>
+<div class="logo-icon" id="logo-toggle" onclick="toggleSpot()" style="cursor:pointer"></div>
 <div>
 <div class="logo-text">NON <span>EST</span></div>
 <span class="logo-tagline">Restaurant Digital Visibility</span>
@@ -401,6 +394,66 @@ alert('Something went wrong. Please try again, or email us at hello@non-est.co.'
 }
 });
 });
+</script>
+
+<script>
+(function(){
+  var spotOn = false;
+  window.toggleSpot = function(){
+    spotOn = !spotOn;
+    var cv = document.getElementById('spotlight-canvas');
+    var icon = document.getElementById('logo-toggle');
+    if(spotOn){ cv.classList.add('on'); icon.classList.add('lit'); drawSpot(); }
+    else { cv.classList.remove('on'); icon.classList.remove('lit'); }
+  };
+  function drawSpot(){
+    var cv = document.getElementById('spotlight-canvas');
+    cv.width = window.innerWidth;
+    cv.height = window.innerHeight;
+    var ctx = cv.getContext('2d');
+    ctx.clearRect(0,0,cv.width,cv.height);
+    var icon = document.getElementById('logo-toggle');
+    var r = icon.getBoundingClientRect();
+    var sx = r.left + r.width/2;
+    var sy = r.top + r.height/2;
+    var hero = document.querySelector('.hero h1');
+    var hr = hero ? hero.getBoundingClientRect() : {left: cv.width*0.2, top: cv.height*0.55, width: cv.width*0.6, height: 120};
+    var tx = hr.left + hr.width/2;
+    var ty = hr.top + hr.height/2;
+    var dx = tx - sx, dy = ty - sy;
+    var angle = Math.atan2(dy, dx);
+    var spread = 0.28;
+    var len = Math.sqrt(dx*dx+dy*dy)*1.6;
+    var p1x = sx + Math.cos(angle-spread)*len;
+    var p1y = sy + Math.sin(angle-spread)*len;
+    var p2x = sx + Math.cos(angle+spread)*len;
+    var p2y = sy + Math.sin(angle+spread)*len;
+    var grad = ctx.createRadialGradient(sx, sy, 0, sx, sy, len);
+    grad.addColorStop(0,   'rgba(255,220,100,0.55)');
+    grad.addColorStop(0.3, 'rgba(212,168,67,0.28)');
+    grad.addColorStop(0.7, 'rgba(212,168,67,0.10)');
+    grad.addColorStop(1,   'rgba(212,168,67,0.0)');
+    ctx.beginPath();
+    ctx.moveTo(sx, sy);
+    ctx.lineTo(p1x, p1y);
+    ctx.lineTo(p2x, p2y);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.save();
+    ctx.filter = 'blur(18px)';
+    ctx.globalAlpha = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(sx, sy);
+    ctx.lineTo(p1x, p1y);
+    ctx.lineTo(p2x, p2y);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(212,168,67,0.18)';
+    ctx.fill();
+    ctx.restore();
+  }
+  window.addEventListener('resize', function(){ if(spotOn) drawSpot(); });
+})();
 </script>
 </body>
 </html>
