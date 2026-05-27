@@ -111,7 +111,7 @@ nav { gap: 24px; font-size: 10px; flex-wrap: wrap; justify-content: center; }
 <canvas id="spotlight-canvas"></canvas>
 <header>
 <div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-<div class="logo-icon" id="logo-toggle" onmouseenter="spotOn()" onmouseleave="spotOff()" style="cursor:pointer"></div>
+<div class="logo-icon" id="logo-toggle" style="cursor:default"></div>
 <div>
 <div class="logo-text">NON <span>EST</span></div>
 <span class="logo-tagline">Restaurant Digital Visibility</span>
@@ -398,8 +398,9 @@ alert('Something went wrong. Please try again, or email us at hello@non-est.co.'
 
 <script>
 (function(){
-  function drawTwoSpots(){
+  function drawSpotlights(){
     var cv = document.getElementById('spotlight-canvas');
+    if(!cv) return;
     cv.width = window.innerWidth;
     cv.height = window.innerHeight;
     var ctx = cv.getContext('2d');
@@ -407,25 +408,27 @@ alert('Something went wrong. Please try again, or email us at hello@non-est.co.'
     var target = document.getElementById('word-visible');
     if(!target) return;
     var tr = target.getBoundingClientRect();
-    var tx = tr.left + tr.width/2;
-    var ty = tr.top + tr.height/2;
-    var s1x = cv.width * 0.05;
+    var tx = tr.left + tr.width / 2;
+    var ty = tr.top + tr.height / 2;
+    var s1x = 0;
     var s1y = 0;
-    var s2x = cv.width * 0.95;
+    var s2x = cv.width;
     var s2y = 0;
     function drawCone(sx, sy, tx, ty, spread){
-      var dx = tx - sx, dy = ty - sy;
+      var dx = tx - sx;
+      var dy = ty - sy;
+      var dist = Math.sqrt(dx*dx + dy*dy);
       var angle = Math.atan2(dy, dx);
-      var len = Math.sqrt(dx*dx+dy*dy) * 1.5;
-      var p1x = sx + Math.cos(angle-spread)*len;
-      var p1y = sy + Math.sin(angle-spread)*len;
-      var p2x = sx + Math.cos(angle+spread)*len;
-      var p2y = sy + Math.sin(angle+spread)*len;
+      var len = dist * 1.4;
+      var p1x = sx + Math.cos(angle - spread) * len;
+      var p1y = sy + Math.sin(angle - spread) * len;
+      var p2x = sx + Math.cos(angle + spread) * len;
+      var p2y = sy + Math.sin(angle + spread) * len;
       var grad = ctx.createRadialGradient(sx, sy, 0, sx, sy, len);
-      grad.addColorStop(0,   'rgba(255,230,120,0.6)');
-      grad.addColorStop(0.25,'rgba(212,168,67,0.35)');
-      grad.addColorStop(0.6, 'rgba(212,168,67,0.12)');
-      grad.addColorStop(1,   'rgba(212,168,67,0.0)');
+      grad.addColorStop(0,    'rgba(255,235,130,0.75)');
+      grad.addColorStop(0.15, 'rgba(212,168,67,0.45)');
+      grad.addColorStop(0.5,  'rgba(212,168,67,0.18)');
+      grad.addColorStop(1,    'rgba(212,168,67,0.0)');
       ctx.beginPath();
       ctx.moveTo(sx, sy);
       ctx.lineTo(p1x, p1y);
@@ -434,38 +437,30 @@ alert('Something went wrong. Please try again, or email us at hello@non-est.co.'
       ctx.fillStyle = grad;
       ctx.fill();
       ctx.save();
-      ctx.filter = 'blur(22px)';
-      ctx.globalAlpha = 0.4;
+      ctx.filter = 'blur(28px)';
+      ctx.globalAlpha = 0.35;
       ctx.beginPath();
       ctx.moveTo(sx, sy);
       ctx.lineTo(p1x, p1y);
       ctx.lineTo(p2x, p2y);
       ctx.closePath();
-      ctx.fillStyle = 'rgba(212,168,67,0.22)';
+      ctx.fillStyle = 'rgba(212,168,67,0.3)';
       ctx.fill();
       ctx.restore();
     }
-    drawCone(s1x, s1y, tx, ty, 0.18);
-    drawCone(s2x, s2y, tx, ty, 0.18);
-  }
-  window.spotOn = function(){
-    var cv = document.getElementById('spotlight-canvas');
-    var icon = document.getElementById('logo-toggle');
+    drawCone(s1x, s1y, tx, ty, 0.15);
+    drawCone(s2x, s2y, tx, ty, 0.15);
     var word = document.getElementById('word-visible');
-    drawTwoSpots();
+    if(word){
+      word.style.textShadow = '0 0 25px rgba(255,220,80,1), 0 0 55px rgba(212,168,67,0.85), 0 0 90px rgba(212,168,67,0.5)';
+      word.style.color = '#fff8d0';
+    }
     cv.classList.add('on');
-    icon.classList.add('lit');
-    if(word){ word.style.textShadow='0 0 30px rgba(255,220,80,1), 0 0 60px rgba(212,168,67,0.8), 0 0 100px rgba(212,168,67,0.5)'; word.style.color='#fff5cc'; }
-  };
-  window.spotOff = function(){
-    var cv = document.getElementById('spotlight-canvas');
-    var icon = document.getElementById('logo-toggle');
-    var word = document.getElementById('word-visible');
-    cv.classList.remove('on');
-    icon.classList.remove('lit');
-    if(word){ word.style.textShadow='none'; word.style.color=''; }
-  };
-  window.addEventListener('resize', function(){ if(document.getElementById('spotlight-canvas').classList.contains('on')) drawTwoSpots(); });
+  }
+  window.addEventListener('load', function(){ drawSpotlights(); });
+  window.addEventListener('resize', drawSpotlights);
+  setTimeout(drawSpotlights, 300);
+  setTimeout(drawSpotlights, 800);
 })();
 </script>
 </body>
