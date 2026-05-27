@@ -89,12 +89,36 @@ nav { gap: 24px; font-size: 10px; flex-wrap: wrap; justify-content: center; }
 .how-title { font-size: 44px; margin-bottom: 60px; }
 .form-section, .features-section, .how-section, .pricing-section { padding: 60px 24px; }
 }
+
+/* Spotlight effect */
+#spotlight-beam {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: conic-gradient(from 180deg at 50% 0%, rgba(212,168,67,0.0) -20deg, rgba(212,168,67,0.22) 0deg, rgba(212,168,67,0.22) 20deg, rgba(212,168,67,0.0) 40deg);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0) 100%);
+}
+#spotlight-beam.active {
+  opacity: 1;
+}
+.logo-icon.lit {
+  box-shadow: 0 0 50px rgba(212,168,67,0.9), 0 0 100px rgba(212,168,67,0.5), 0 0 160px rgba(212,168,67,0.2) !important;
+}
 </style>
 </head>
 <body>
+<div id="spotlight-beam"></div>
 <header>
 <div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-<div class="logo-icon"></div>
+<div class="logo-icon" id="logo-toggle" onclick="(function(){var b=document.getElementById('spotlight-beam');var i=document.getElementById('logo-toggle');b.classList.toggle('active');i.classList.toggle('lit');})()" style="cursor:pointer" title="Click me"></div>
 <div>
 <div class="logo-text">NON <span>EST</span></div>
 <span class="logo-tagline">Restaurant Digital Visibility</span>
